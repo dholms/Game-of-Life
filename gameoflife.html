@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> 
+<html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Game of Life</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script type="text/javascript">
+	        var c_canvas;
+	        var context;
+	        var grid = [];
+	        var run = false;
+
+	        for(var i = 0; i < 50; i++){
+	        	grid.push([]);
+	        	for(var j = 0; j < 80; j++){
+	        		grid[i].push(0);
+	        	}
+	        }
+	        grid[6][4] = 1;
+	        grid[5][4] = 1;
+	        grid[4][4] = 1;
+	        grid[6][3] = 1;
+	        grid[5][2] = 1;
+	        // grid[3][7] = 1;
+
+        	$(document).ready(function(){
+        		c_canvas = document.getElementById("c");
+        		c_canvas.addEventListener('click', function(e){
+        			var x = Math.floor(e.pageX-c_canvas.offsetLeft);
+        			var y = Math.floor(e.pageY-c_canvas.offsetTop);
+        			gridOnClick(x, y);
+        		}, false);
+
+				context = c_canvas.getContext("2d");
+        		for (var x = 0.5; x < 801; x += 10) {
+        		  context.moveTo(x, 0);
+        		  context.lineTo(x, 501);
+        		}
+        		for (var y = 0.5; y < 501; y += 10) {
+        		  context.moveTo(0, y);
+        		  context.lineTo(801, y);
+        		}
+        		context.strokeStyle = "#aaa";
+        		context.stroke();
+    			printGrid();
+	        });
+
+	        function printGrid(){
+        		for (var i = 0; i < 50; i++){
+				    for (var j = 0; j < 80; j++){
+				    	if(grid[i][j] == 1){
+				    		x = i*10;
+				    		y = j*10;
+				    		context.fillStyle = "#aaa";
+				    		context.fillRect(x, y, 10, 10);
+				    	}
+				    }
+	        	};
+	        }
+
+        	function step(){
+        		var toKill = [];
+        		var toBirth = [];
+        		for(var i = 0; i < 50; i++){
+        			for(var j = 0; j < 80; j++){
+    					neighbors = getLiveNeighborCount(i, j);
+        				if(grid[i][j] == 1){
+        					if(neighbors < 2 || neighbors > 3){
+        						toKill.push([i, j]);
+        					}
+        				}
+        				else{
+        					if(neighbors == 3){
+        						toBirth.push([i,j]);
+        					}
+        				}
+        			}
+        		}
+        		for(var i = 0; i < toKill.length; i++){
+        			cell = toKill[i];
+        			kill(cell[0], cell[1]);
+	    		}
+        		toKill.length = 0;
+        		for(var i = 0; i < toBirth.length; i++){
+        			cell = toBirth[i];
+        			birth(cell[0], cell[1]);
+        		}
+        		toBirth.length = 0;
+        		if(run){
+        			setTimeout(function(){step()}, 75);
+        		}
+        	}
+
+        	function birth(i, j){
+        		grid[i][j] = 1;
+    			x = i*10+1;
+	    		y = j*10+1;
+	    		context.fillStyle = "#aaa";
+	    		context.fillRect(x, y, 9, 9);
+        	}
+
+        	function kill(i, j){
+        		grid[i][j] = 0;
+    			x = i*10+1;
+	    		y = j*10+1;
+	    		context.fillStyle = "#fff";
+	    		context.fillRect(x, y, 9, 9);
+        	}
+
+        	function getLiveNeighborCount(i, j){
+        		var neighbors = 0;
+        		for(var k = i-1; k <= i+1; k++){
+        			for(var l = j-1; l <= j+1; l++){
+        				if(k >= 0 && k < 50){
+        					if(l >= 0 && l < 80){
+        						if(grid[k][l] == 1 && (i!=k || j!=l)){
+        							neighbors++;
+        						}
+        					}
+        				}
+        			}
+        		}
+        		return neighbors
+        	}
+
+        	function gridOnClick(x, y){
+        		x = Math.floor(x/10);
+        		y = Math.floor(y/10);
+        		if(grid[x][y] == 0){
+        			birth(x, y);
+        		}
+        		else
+        			kill(x, y);
+        	}
+
+        	function start(){
+        		run = true;
+        		step();
+        	}
+        	function stop(){
+        		run = false;
+        	}
+        	function wipeBoard(){
+        		stop();
+
+        		for(var i = 0; i < 50; i++){
+        			for(var j = 0; j < 80; j++){
+        				if(grid[i][j]==1){
+        					kill(i, j);
+        					console.log("yup")
+        				}
+        			}
+        		}
+        	}
+        </script>
+    </head>
+    <body>
+    	<!-- <div id="test"></div> -->
+        <canvas id="c" width = "801" height = "501"></canvas>
+        <button onclick="step()">step</button>
+        <button onclick="start()">start</button>
+        <button onclick="stop()">stop</button>
+        <button onclick="wipeBoard()">clear</button>
+    </body>
+</html>
