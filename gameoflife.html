@@ -31,9 +31,9 @@
 	        var grid = [];
 	        var run = false;
 	        //initial 50x80 grid of all 0s
-	        for(var i = 0; i < 50; i++){
+	        for(var i = 0; i < 80; i++){
 	        	grid.push([]);
-	        	for(var j = 0; j < 80; j++){
+	        	for(var j = 0; j < 50; j++){
 	        		grid[i].push(0);
 	        	}
 	        }
@@ -76,8 +76,8 @@
         		var toBirth = [];
         		//searches through grid to find all cells to kill and birth
         		//adds to array because they all must be killed/birthed in an instant not one at a time
-        		for(var i = 0; i < 50; i++){
-        			for(var j = 0; j < 80; j++){
+        		for(var i = 0; i < 80; i++){
+        			for(var j = 0; j < 50; j++){
     					neighbors = getLiveNeighborCount(i, j);
         				if(grid[i][j] == 1){
         					if(neighbors < 2 || neighbors > 3){
@@ -118,8 +118,8 @@
         		var neighbors = 0;
         		for(var k = i-1; k <= i+1; k++){
         			for(var l = j-1; l <= j+1; l++){
-        				if(k >= 0 && k < 50){
-        					if(l >= 0 && l < 80){
+        				if(k >= 0 && k < 80){
+        					if(l >= 0 && l < 50){
         						if(grid[k][l] == 1 && (i!=k || j!=l)){
         							neighbors++;
         						}
@@ -173,8 +173,8 @@
         	function wipeBoard(){
         		stop();
 
-        		for(var i = 0; i < 50; i++){
-        			for(var j = 0; j < 80; j++){
+        		for(var i = 0; i < 80; i++){
+        			for(var j = 0; j < 50; j++){
         				if(grid[i][j]==1){
         					kill(i, j);
         				}
