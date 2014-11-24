@@ -107,7 +107,7 @@
         		if(run){
         			//calculate loop speed from 10 ms to 460ms
         			x = document.getElementById("speed").value;
-        			x = (x*50) - 40
+        			x = ((11-x)*50) - 40
         			console.log(x);
         			setTimeout(function(){step()}, x);
         		}
