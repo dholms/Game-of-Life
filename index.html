@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Game of Life</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="application.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script type="text/javascript" src="application.js"></script>
+    </head>
+    <body>
+    	<h1>Conway's Game of Life</h1>
+        <canvas id="c" width = "801" height = "501"></canvas>
+        <div id="buttons">
+        	<button onclick="start()">start</button>
+        	<button onclick="stop()">stop</button>
+        	<button onclick="stepClick()">step</button>
+        	<button onclick="wipeBoard()">clear</button>
+            <button onclick="random()">random</button>
+        	Speed: <input id="speed" type="range" min="1" max="20" step = "1" value = "15"/>
+            <br><br>
+            Width: <input id="width" type="text" value="50" size="3"> 
+            Height: <input id="height" type="text" value="50" size="3"> 
+            Cell Size: <input id="cellSize" type="text" value="8" size="3"> 
+            <br><br>
+            Neighbor Radius: <input id="radius" type="text" value="1" size="3"> 
+            Lonliness Threshold: <input id="loneliness" type="text" value="2" size="3"> 
+            Overpopulation Threshold: <input id="overpop" type="text" value="3" size="3"> 
+            Generation Min: <input id="genmin" type="text" value="3" size="3"> 
+            Generation Max: <input id="genmax" type="text" value="3" size="3"> 
+            <br><br>
+            Cells Off the Edge: 
+            <select id="sides">
+                <option value="toroidal">Toroidal</option>
+                <option value="dead">Dead</option>
+                <option value="alive">Alive</option>
+            </select>
+            <button onclick="refresh()">Refresh</button>
+        </div>
+    </body>
+</html>
